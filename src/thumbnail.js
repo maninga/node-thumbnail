@@ -18,6 +18,7 @@ var options, queue, defaults, done, extensions, createQueue, run;
 defaults = {
   prefix : '',
   suffix: '_thumb',
+  match: '',
   digest: false,
   hashingType: 'sha1',
   width: 800,
@@ -98,7 +99,9 @@ createQueue = function(settings) {
 run = function(settings) {
   var images = fs.readdirSync(settings.source);
   images = _.reject(images, function(file) {
-    return _.indexOf(extensions, path.extname(file)) === -1;
+    var ext = path.extname(file);
+    var base  = path.basename(file, ext);
+    return _.indexOf(extensions, ext) === -1 || (settings.match && !base.match(new RegExp(settings.match))) || (settings.suffix && base.match(new RegExp(settings.suffix + '$'))) || (settings.prefix && base.match(new RegExp('^' + setting.prefix)));
   });
 
   createQueue(settings);
@@ -125,15 +128,20 @@ exports.thumb = function(options, callback) {
 
   if (options.args) {
 
-    if (options.args.length != 2) {
-      console.log('Please provide a source and destination directories.');
+    if (options.args.length < 1) {
+      console.log('Please provide at least a source [and destination] directories.');
       return;
     }
 
-    options.source = options.args[0];
-    options.destination = options.args[1];
+    options.destination = options.source = options.args[0];
 
+    if (options.args.length === 2) {
+      options.destination = options.args[1];
+    }
   }
+
+  options.source = options.source || 'imsurethatthisdirdoesnotexist';
+  options.destination = options.destination || options.source;
 
   if (fs.existsSync(options.source) && fs.existsSync(options.destination)) {
     settings = _.defaults(options, defaults);

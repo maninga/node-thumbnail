@@ -9,7 +9,7 @@ imagemagick - it's super fast
 command-line usage
 ------------------
 
-    thumb [options] source/path dest/path
+    thumb [options] source/path [dest/path]
 
 options:
 
@@ -18,6 +18,7 @@ options:
 
     -s SUFFIX, --suffix SUFFIX
     -p PREFIX, --prefix PREFIX
+    -m MATCH, --match MATCH (to process only files that matches this pattern)
     -d, --digest
     -t TYPE, --hashing-type TYPE
 
@@ -51,6 +52,7 @@ default options:
 defaults = {
   prefix: '',
   suffix: '_thumb',
+  match: '',
   digest: false,
   hashingType: 'sha1', // 'sha1', 'md5', 'sha256', 'sha512'
   width: 800,
@@ -59,7 +61,7 @@ defaults = {
 };
 ```
 
-**Note** you must specify at least `source` and `destination`
+**Note** you must specify at least `source` [and `destination`] (or it would be `source`)
 
 installation
 ------------

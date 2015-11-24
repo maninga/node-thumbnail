@@ -12,6 +12,7 @@ program
   .option('-w, --width [width]', 'Thumbnail width in pixels. Default: 800', 800)
   .option('-c, --concurrency [num]', 'Number of workers (defaults to num of CPUs)')
   .option('-q, --quiet', 'Supress all output')
+  .option('-m, --match [match]', 'filename should match only this string (defaults to "", converted to new RegExp)', '')
   .option('-o, --overwrite', 'Overwrite existing thumbs')
   .parse(process.argv);
 
